@@ -11,7 +11,7 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         .card { 
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -297,6 +297,16 @@
             document.getElementById('prev-page').addEventListener('click', onPrevPage);
             document.getElementById('next-page').addEventListener('click', onNextPage);
             document.getElementById('close-pdf-preview').addEventListener('click', closePdfPreview);
+            
+            // *** FIX IS HERE: Added the event listener for the Reseed button ***
+            document.getElementById('reseed-db-btn').addEventListener('click', async () => {
+                if (confirm("Are you sure you want to reset the database? This will delete all current data and restore the original 20 invoices.")) {
+                    await withLoading(async () => {
+                        await api.reseedDatabase();
+                        await loadInvoices(); // Reload the data after reseeding
+                    });
+                }
+            });
 
             loadInvoices();
         });
