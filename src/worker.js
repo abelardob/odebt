@@ -1,36 +1,88 @@
 // src/worker.js
 // This is the backend logic for your application. It's a Cloudflare Worker
 // that handles API requests from the frontend to interact with the D1 database.
+// This version includes CORS headers to allow cross-origin requests.
+
+// Define CORS headers that will be added to every response.
+const corsHeaders = {
+  'Access-Control-Allow-Headers': '*', // Allow all headers
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', // Allow all methods
+  'Access-Control-Allow-Origin': '*' // Allow requests from any origin
+};
+
+/**
+ * Handles CORS preflight requests (OPTIONS method).
+ * The browser sends this automatically before making a "complex" request (like POST/PUT).
+ * @param {Request} request The incoming request
+ * @returns {Response} A response with the appropriate CORS headers.
+ */
+function handleOptions(request) {
+  if (
+    request.headers.get('Origin') !== null &&
+    request.headers.get('Access-Control-Request-Method') !== null &&
+    request.headers.get('Access-Control-Request-Headers') !== null
+  ) {
+    // Handle CORS preflight requests.
+    return new Response(null, {
+      headers: corsHeaders
+    });
+  } else {
+    // Handle standard OPTIONS request.
+    return new Response(null, {
+      headers: {
+        Allow: 'GET, POST, PUT, DELETE, OPTIONS',
+      },
+    });
+  }
+}
 
 export default {
   async fetch(request, env) {
+    // Handle CORS preflight requests first.
+    if (request.method === 'OPTIONS') {
+      return handleOptions(request);
+    }
+    
     const url = new URL(request.url);
+    let response;
+
     // Basic routing based on the URL path and HTTP method
     if (url.pathname === '/api/invoices') {
       switch (request.method) {
         case 'GET':
-          return await getInvoices(env);
+          response = await getInvoices(env);
+          break;
         case 'POST':
-          return await addInvoice(request, env);
+          response = await addInvoice(request, env);
+          break;
         default:
-          return new Response('Method Not Allowed', { status: 405 });
+          response = new Response('Method Not Allowed', { status: 405 });
+          break;
       }
-    }
-
-    if (url.pathname.startsWith('/api/invoices/')) {
+    } else if (url.pathname.startsWith('/api/invoices/')) {
        const id = url.pathname.split('/')[3];
        switch (request.method) {
         case 'PUT':
-            return await updateInvoice(request, env, id);
+            response = await updateInvoice(request, env, id);
+            break;
         case 'DELETE':
-            return await deleteInvoice(env, id);
+            response = await deleteInvoice(env, id);
+            break;
         default:
-          return new Response('Method Not Allowed', { status: 405 });
+          response = new Response('Method Not Allowed', { status: 405 });
+          break;
        }
+    } else {
+        response = new Response('Not Found', { status: 404 });
     }
 
-    // Fallback for any other request
-    return new Response('Not Found', { status: 404 });
+    // Clone the response so we can add the CORS headers to it.
+    response = new Response(response.body, response);
+    Object.keys(corsHeaders).forEach(header => {
+        response.headers.set(header, corsHeaders[header]);
+    });
+
+    return response;
   },
 };
 
@@ -60,7 +112,6 @@ async function getInvoices(env) {
 async function addInvoice(request, env) {
   try {
     const invoice = await request.json();
-    // Validate incoming data
     if (!invoice.provider || !invoice.service || !invoice.amount || !invoice.date || !invoice.status) {
         return new Response(JSON.stringify({ error: "Missing required fields"}), { status: 400, headers: { 'Content-Type': 'application/json' }});
     }
@@ -96,8 +147,6 @@ async function addInvoice(request, env) {
 async function updateInvoice(request, env, id) {
     try {
         const invoiceUpdates = await request.json();
-        // For now, we only support status and attachment updates.
-        // A more robust implementation would handle updating any field.
         const { results } = await env.DB.prepare(
             'UPDATE invoices SET status = ?, attachment = ? WHERE id = ? RETURNING *'
         ).bind(
