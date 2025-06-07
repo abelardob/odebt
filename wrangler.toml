@@ -1,18 +1,15 @@
-# wrangler.toml
-# This is the configuration file for your Cloudflare Worker.
-# It defines the project name, entry points, and database bindings.
-
 name = "mpl-invoice-manager"
-main = "src/worker.js"
 compatibility_date = "2023-10-30"
 
-# This section is for Cloudflare Pages Functions. It tells Pages
-# to serve static assets from the root directory and route all
-# /api/* requests to the worker in src/worker.js.
-[pages_build_output]
-dir = "./" # Serve static assets from the project root (where index.html is)
+# This section tells Cloudflare Pages that the /src/worker.js file contains
+# the serverless functions for your application.
+[[services]]
+binding = "api" # internal binding name
+service = "mpl-invoice-manager" # must match the 'name' at the top
 
 [[d1_databases]]
 binding = "DB" # This is how the worker will access the database (env.DB)
 database_name = "mpl-invoices"
-database_id = "<04f0df31-9bf2-41a5-b0d2-edaed76a87ce>" # You will get this after creating the D1 database
+# IMPORTANT: Replace the database_id below with your actual D1 database ID.
+# You can get this by running 'wrangler d1 list' or finding it in the Cloudflare dashboard.
+database_id = "04f0df31-9bf2-41a5-b0d2-edaed76a87ce"
