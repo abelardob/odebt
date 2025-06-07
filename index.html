@@ -12,12 +12,27 @@
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         .card { background-color: white; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); transition: transform 0.2s, box-shadow 0.2s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
-        .status-outstanding { border-left: 4px solid #ef4444; }
-        .status-paid { border-left: 4px solid #22c55e; }
-        .status-in-review { border-left: 4px solid #f97316; }
         .modal-backdrop { background-color: rgba(0,0,0,0.5); transition: opacity 0.3s ease; }
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; position: absolute; top: 50%; left: 50%; margin-left: -20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* New "Ray" Effect for Status Borders */
+        .status-outstanding {
+            border-left-width: 4px;
+            border-image-slice: 1;
+            border-image-source: linear-gradient(to bottom, #ff8a8a, #ef4444, #b91c1c);
+        }
+        .status-paid {
+            border-left-width: 4px;
+            border-image-slice: 1;
+            border-image-source: linear-gradient(to bottom, #86efac, #22c55e, #16a34a);
+        }
+        .status-in-review {
+            border-left-width: 4px;
+            border-image-slice: 1;
+            border-image-source: linear-gradient(to bottom, #fcd34d, #f97316, #d97706);
+        }
+
         /* PDF Previewer Styles */
         #pdf-preview-modal { background-color: rgba(0,0,0,0.8); }
         #pdf-canvas { border: 1px solid black; direction: ltr; }
