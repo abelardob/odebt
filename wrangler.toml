@@ -1,13 +1,12 @@
 # wrangler.toml
-# This is the corrected and simplified configuration file for a Cloudflare Pages deployment.
+# This is the corrected configuration file for a standalone Cloudflare Worker deployment.
 
 name = "mpl-invoice-manager"
+main = "src/worker.js" # Specifies the entry-point for the worker script
 compatibility_date = "2023-10-30"
-
-# The pages_build_output_dir is no longer needed when using the standard 'functions' directory.
 
 [[d1_databases]]
 binding = "DB" # This is how the worker will access the database (env.DB)
 database_name = "mpl-invoices"
-# This ID is correctly set to your specific D1 database.
+# This ID is set to your specific D1 database.
 database_id = "04f0df31-9bf2-41a5-b0d2-edaed76a87ce"
