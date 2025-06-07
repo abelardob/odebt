@@ -1,15 +1,12 @@
-name = "mpl-invoice-manager"
-compatibility_date = "2023-10-30"
+# wrangler.toml
+# This is the corrected configuration file for a standalone Cloudflare Worker deployment.
 
-# This section tells Cloudflare Pages that the /src/worker.js file contains
-# the serverless functions for your application.
-[[services]]
-binding = "api" # internal binding name
-service = "mpl-invoice-manager" # must match the 'name' at the top
+name = "mpl-invoice-manager"
+main = "src/worker.js" # Specifies the entry-point for the worker script
+compatibility_date = "2023-10-30"
 
 [[d1_databases]]
 binding = "DB" # This is how the worker will access the database (env.DB)
 database_name = "mpl-invoices"
-# IMPORTANT: Replace the database_id below with your actual D1 database ID.
-# You can get this by running 'wrangler d1 list' or finding it in the Cloudflare dashboard.
+# IMPORTANT: This ID is now set to your specific D1 database.
 database_id = "04f0df31-9bf2-41a5-b0d2-edaed76a87ce"
