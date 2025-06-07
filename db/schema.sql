@@ -41,3 +41,4 @@ INSERT INTO invoices (provider, service, amount, status, date) VALUES
 ('MPL', 'Surveillance May 2023', 131189.04, 'Outstanding', '2023-05-31'),
 ('MPL', 'Surveillance Jun 2023', 131189.04, 'Outstanding', '2023-06-30'),
 ('AMBIDEST, S.A. DE C.V.', 'Environmental services MIA-P', 127600.00, 'Outstanding', '2023-03-20');
+
