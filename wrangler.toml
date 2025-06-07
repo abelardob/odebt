@@ -15,4 +15,4 @@ dir = "./" # Serve static assets from the project root (where index.html is)
 [[d1_databases]]
 binding = "DB" # This is how the worker will access the database (env.DB)
 database_name = "mpl-invoices"
-database_id = "<YOUR_DATABASE_ID_HERE>" # You will get this after creating the D1 database
+database_id = "<04f0df31-9bf2-41a5-b0d2-edaed76a87ce>" # You will get this after creating the D1 database
