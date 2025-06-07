@@ -206,6 +206,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- CONFIGURATION ---
+            // This URL points to your live Cloudflare Worker backend.
+            const WORKER_URL = "https://mpl-invoice-manager.odebt76.workers.dev"; 
+
             // --- STATE MANAGEMENT ---
             let state = {
                 invoices: [],
@@ -216,12 +220,12 @@
             // --- API HELPERS ---
             const api = {
                 getInvoices: async () => {
-                    const response = await fetch('/api/invoices');
+                    const response = await fetch(`${WORKER_URL}/api/invoices`);
                     if (!response.ok) throw new Error('Failed to fetch invoices');
                     return await response.json();
                 },
                 addInvoice: async (invoiceData) => {
-                    const response = await fetch('/api/invoices', {
+                    const response = await fetch(`${WORKER_URL}/api/invoices`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(invoiceData),
@@ -230,7 +234,7 @@
                     return await response.json();
                 },
                 updateInvoice: async (id, updatedData) => {
-                     const response = await fetch(`/api/invoices/${id}`, {
+                     const response = await fetch(`${WORKER_URL}/api/invoices/${id}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(updatedData),
@@ -239,7 +243,7 @@
                     return await response.json();
                 },
                 deleteInvoice: async (id) => {
-                     const response = await fetch(`/api/invoices/${id}`, {
+                     const response = await fetch(`${WORKER_URL}/api/invoices/${id}`, {
                         method: 'DELETE',
                     });
                     if (!response.ok) throw new Error('Failed to delete invoice');
