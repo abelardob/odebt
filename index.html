@@ -73,7 +73,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const WORKER_URL = "";
-            const ATTACHMENT_CATEGORIES = ['Estimate', 'Invoice', 'Proof of Payment', 'Other'];
+            const ATTACHMENT_CATEGORIES = ['Estimate', 'Invoice', 'Other'];
             let state = { invoices: [], loading: true };
             const api = {
                 getInvoices: () => fetch(`${WORKER_URL}/api/invoices`).then(res => res.json()),
@@ -298,7 +298,6 @@
             document.getElementById('next-page').addEventListener('click', onNextPage);
             document.getElementById('close-pdf-preview').addEventListener('click', closePdfPreview);
             
-            // *** FIX IS HERE: Added the event listener for the Reseed button ***
             document.getElementById('reseed-db-btn').addEventListener('click', async () => {
                 if (confirm("Are you sure you want to reset the database? This will delete all current data and restore the original 20 invoices.")) {
                     await withLoading(async () => {
