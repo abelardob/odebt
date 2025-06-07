@@ -121,7 +121,8 @@ async function handleReseed(request, env) {
         ('MPL', 'Surveillance Mar 2023', 131189.04, 'Outstanding', '2023-03-31'),
         ('MPL', 'Surveillance Apr 2023', 131189.04, 'Outstanding', '2023-04-30'),
         ('MPL', 'Surveillance May 2023', 131189.04, 'Outstanding', '2023-05-31'),
-        ('MPL', 'Surveillance Jun 2023', 131189.04, 'Outstanding', '2023-06-30'),
+        ('MPL', 'Surveillance Jun 2023', 131189.04, 'Outstanding', '2023-06-30');
+
     `;
     
     await env.DB.batch(reseedScript.split(';').filter(q => q.trim()).map(q => env.DB.prepare(q)));
