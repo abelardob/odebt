@@ -39,13 +39,14 @@
         <div id="no-results" class="hidden text-center py-16"><svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2z" /></svg><h3 class="mt-2 text-sm font-medium text-gray-900">No invoices found</h3><p class="mt-1 text-sm text-gray-500">No invoices match the current filter criteria.</p></div>
     </div>
     <!-- Modals -->
-    <div id="confirmation-modal" class="hidden fixed inset-0 z-10 overflow-y-auto"><div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"><div class="fixed inset-0 modal-backdrop"></div><span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span><div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"><div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4"><div class="sm:flex sm:items-start"><div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"><svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg></div><div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left"><h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Delete Invoice</h3><div class="mt-2"><p class="text-sm text-gray-500" id="modal-message">Are you sure? This action cannot be undone.</p></div></div></div></div><div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"><button id="confirm-delete-btn" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700">Delete</button><button id="cancel-delete-btn" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50">Cancel</button></div></div></div></div>
+    <div id="confirmation-modal" class="hidden fixed inset-0 z-10 overflow-y-auto"><div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"><div class="fixed inset-0 modal-backdrop"></div><span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span><div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"><div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4"><div class="sm:flex sm:items-start"><div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"><svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg></div><div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left"><h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Delete</h3><div class="mt-2"><p class="text-sm text-gray-500" id="modal-message">Are you sure?</p></div></div></div></div><div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"><button id="confirm-delete-btn" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700">Delete</button><button id="cancel-delete-btn" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50">Cancel</button></div></div></div></div>
     <div id="invoice-modal" class="hidden fixed inset-0 z-10 overflow-y-auto"><div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"><div class="fixed inset-0 modal-backdrop"></div><span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span><div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"><form id="invoice-form"><div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4"><h3 class="text-lg leading-6 font-medium text-gray-900" id="invoice-modal-title">Add New Invoice</h3><div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"><div class="sm:col-span-6"><label for="form-provider" class="block text-sm font-medium text-gray-700">Provider</label><input type="text" id="form-provider" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></div><div class="sm:col-span-6"><label for="form-service" class="block text-sm font-medium text-gray-700">Service / Concept</label><textarea id="form-service" rows="3" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea></div><div class="sm:col-span-3"><label for="form-amount" class="block text-sm font-medium text-gray-700">Amount (MXN)</label><input type="number" step="0.01" id="form-amount" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></div><div class="sm:col-span-3"><label for="form-date" class="block text-sm font-medium text-gray-700">Invoice Date</label><input type="date" id="form-date" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></div><div class="sm:col-span-6"><label for="form-status" class="block text-sm font-medium text-gray-700">Status</label><select id="form-status" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 rounded-md"><option>Outstanding</option><option>Paid</option><option>In Review</option></select></div></div></div><div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"><button type="submit" id="save-invoice-btn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700">Save</button><button type="button" id="cancel-invoice-btn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50">Cancel</button></div></form></div></div></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- CONFIG ---
             const WORKER_URL = "";
+            const ATTACHMENT_CATEGORIES = ['Estimate', 'Invoice', 'Proof of Payment', 'Other'];
 
             // --- STATE & API ---
             let state = { invoices: [], loading: true };
@@ -54,12 +55,12 @@
                 addInvoice: (data) => fetch(`${WORKER_URL}/api/invoices`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) }).then(res => res.json()),
                 updateInvoice: (id, data) => fetch(`${WORKER_URL}/api/invoices/${id}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) }).then(res => res.json()),
                 deleteInvoice: (id) => fetch(`${WORKER_URL}/api/invoices/${id}`, { method: 'DELETE' }),
+                deleteAttachment: (id) => fetch(`${WORKER_URL}/api/attachments/${id}`, { method: 'DELETE' }),
             };
             
             // --- DOM ELEMENTS ---
             const invoiceGrid = document.getElementById('invoice-grid');
-            let invoiceIdToDelete = null;
-            // ... (other element selectors)
+            let itemToDelete = { id: null, type: null }; // Can be 'invoice' or 'attachment'
             
             // --- RENDER FUNCTIONS ---
             const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'MXN' }).format(amount);
@@ -82,7 +83,6 @@
                 providers.forEach(p => providerFilter.innerHTML += `<option value="${p}">${p}</option>`);
                 providerFilter.value = currentProvider;
 
-
                 // Filter & Sort
                 let filtered = state.invoices.filter(inv => 
                     (providerFilter.value === 'All Providers' || inv.provider === providerFilter.value) &&
@@ -93,16 +93,36 @@
                 // Render grid
                 invoiceGrid.innerHTML = '';
                 document.getElementById('no-results').classList.toggle('hidden', filtered.length > 0);
+
                 filtered.forEach(invoice => {
                     const card = document.createElement('div');
                     card.className = `card p-5 flex flex-col justify-between status-${invoice.status.toLowerCase().replace(' ', '-')}`;
                     const statusColor = invoice.status === 'Paid' ? 'text-green-600 bg-green-100' : invoice.status === 'In Review' ? 'text-orange-600 bg-orange-100' : 'text-red-600 bg-red-100';
                     
-                    const attachmentHTML = invoice.attachment
-                        ? `<div class="flex items-center justify-between bg-gray-50 p-2 rounded-md"><a href="${invoice.attachment}" target="_blank" class="text-sm text-indigo-700 hover:underline truncate" title="${invoice.attachment}">${invoice.attachment.split('/').pop()}</a><button class="remove-attach-btn p-1 text-gray-400 hover:text-red-600" data-id="${invoice.id}"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button></div>`
-                        : `<input type="file" id="file-input-${invoice.id}" class="hidden" accept=".pdf,.jpg,.jpeg,.png"><button class="attach-btn w-full text-sm text-indigo-600 border-2 border-dashed border-gray-300 rounded-md py-2 hover:bg-indigo-50" data-id="${invoice.id}">Add Attachment</button>`;
+                    const attachmentsByCategory = (invoice.attachments || []).reduce((acc, att) => {
+                        (acc[att.category] = acc[att.category] || []).push(att);
+                        return acc;
+                    }, {});
 
-                    // *** FIX IS HERE: The Status and Delete buttons were missing. They have been restored. ***
+                    let attachmentsHTML = ATTACHMENT_CATEGORIES.map(category => {
+                        const attachments = attachmentsByCategory[category] || [];
+                        const filesHTML = attachments.map(att => `
+                            <div class="flex items-center justify-between text-sm mt-1">
+                                <a href="${att.file_url}" target="_blank" class="text-indigo-600 hover:underline truncate" title="${att.file_name}">${att.file_name}</a>
+                                <button class="remove-attach-btn p-1 text-gray-400 hover:text-red-600" data-id="${att.id}">&times;</button>
+                            </div>
+                        `).join('');
+                        
+                        return `
+                            <div class="mt-2">
+                                <label class="text-xs font-semibold text-gray-500">${category}</label>
+                                ${filesHTML}
+                                <input type="file" id="file-input-${invoice.id}-${category}" class="hidden attach-file-input" data-invoice-id="${invoice.id}" data-category="${category}" accept=".pdf,.jpg,.jpeg,.png">
+                                <button class="add-category-btn w-full text-xs text-gray-500 border-2 border-dashed border-gray-200 rounded-md py-1 mt-1 hover:bg-gray-50" data-invoice-id="${invoice.id}" data-category="${category}">+ Add</button>
+                            </div>
+                        `;
+                    }).join('');
+
                     card.innerHTML = `
                         <div>
                             <div class="flex justify-between items-start">
@@ -114,14 +134,14 @@
                             <p class="font-bold text-2xl text-gray-900 mt-4">${formatCurrency(invoice.amount)}</p>
                         </div>
                         <div>
-                            <div class="mt-4 pt-4 border-t border-gray-200">${attachmentHTML}</div>
+                            <div class="mt-4 pt-4 border-t border-gray-200">
+                                <h5 class="text-sm font-bold text-gray-700">Attachments</h5>
+                                ${attachmentsHTML}
+                            </div>
                             <div class="mt-4 flex justify-end gap-2">
                                 <div class="relative inline-block text-left group">
-                                    <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                                        Status
-                                        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                                    </button>
-                                    <div class="origin-top-right absolute right-0 bottom-full mb-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                    <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">Status</button>
+                                    <div class="origin-top-right absolute right-0 bottom-full mb-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                                         <div class="py-1">
                                             <a href="#" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 status-change-btn" data-id="${invoice.id}" data-status="Paid">Paid</a>
                                             <a href="#" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 status-change-btn" data-id="${invoice.id}" data-status="In Review">In Review</a>
@@ -129,9 +149,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="delete-btn p-2 text-gray-400 hover:text-red-600" data-id="${invoice.id}">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd"></path></svg>
-                                </button>
+                                <button class="delete-invoice-btn p-2 text-gray-400 hover:text-red-600" data-id="${invoice.id}"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd"></path></svg></button>
                             </div>
                         </div>`;
                     invoiceGrid.appendChild(card);
@@ -142,32 +160,25 @@
             const withLoading = async (action) => {
                 state.loading = true; render();
                 try { await action(); } catch (e) { alert(`Error: ${e.message}`); console.error(e); }
-                state.loading = false; render();
+                state.loading = false;
             };
-            const loadInvoices = async () => withLoading(async () => { state.invoices = await api.getInvoices(); });
-            
-            const handleAttachmentChange = async (id, file) => {
-                const invoice = state.invoices.find(inv => inv.id === id);
-                if (!file) { // This handles removing an attachment
-                    await withLoading(async () => {
-                        const updated = await api.updateInvoice(id, { status: invoice.status, attachment: null });
-                        const index = state.invoices.findIndex(inv => inv.id === id);
-                        if (index !== -1) state.invoices[index] = updated;
-                    });
-                    return;
-                }
-
+            const loadInvoices = async () => {
+                await withLoading(async () => { state.invoices = await api.getInvoices(); });
+                render();
+            };
+            const handleAddAttachment = async (invoiceId, category, file) => {
                 await withLoading(async () => {
                     const reader = new FileReader();
                     reader.onload = async (e) => {
-                        const content = e.target.result.split(',')[1]; // Get base64 content
-                        const updated = await api.updateInvoice(id, {
+                        const content = e.target.result.split(',')[1];
+                        const invoice = state.invoices.find(inv => inv.id === invoiceId);
+                        const updated = await api.updateInvoice(invoiceId, {
                             status: invoice.status,
-                            attachment: { content: content, name: file.name }
+                            newAttachment: { content: content, name: file.name, category: category }
                         });
-                        const index = state.invoices.findIndex(inv => inv.id === id);
+                        const index = state.invoices.findIndex(inv => inv.id === invoiceId);
                         if (index !== -1) state.invoices[index] = updated;
-                        render(); // Re-render after successful upload
+                        render();
                     };
                     reader.readAsDataURL(file);
                 });
@@ -176,18 +187,26 @@
             const handleStatusChange = async (id, status) => {
                 await withLoading(async () => {
                     const invoice = state.invoices.find(inv => inv.id === id);
-                    const updated = await api.updateInvoice(id, { status: status, attachment: invoice.attachment });
+                    const updated = await api.updateInvoice(id, { status: status });
                     const index = state.invoices.findIndex(inv => inv.id === id);
-                    if (index !== -1) state.invoices[index] = updated;
+                    if (index !== -1) Object.assign(state.invoices[index], updated);
                 });
+                render();
             };
             
-            const handleDelete = async (id) => {
-                 await withLoading(async () => {
-                    await api.deleteInvoice(id);
-                    state.invoices = state.invoices.filter(inv => inv.id !== id);
+            const handleDelete = async () => {
+                await withLoading(async () => {
+                    if (itemToDelete.type === 'invoice') {
+                        await api.deleteInvoice(itemToDelete.id);
+                        state.invoices = state.invoices.filter(inv => inv.id !== itemToDelete.id);
+                    } else if (itemToDelete.type === 'attachment') {
+                        await api.deleteAttachment(itemToDelete.id);
+                        // Refetch all invoices to get updated attachment list
+                        state.invoices = await api.getInvoices();
+                    }
                 });
-            }
+                render();
+            };
 
             // --- EVENT LISTENERS ---
             document.querySelectorAll('select').forEach(el => el.addEventListener('change', render));
@@ -198,24 +217,29 @@
                     e.preventDefault();
                     handleStatusChange(parseInt(statusBtn.dataset.id), statusBtn.dataset.status);
                 }
-                const deleteBtn = e.target.closest('.delete-btn');
-                if (deleteBtn) {
-                    invoiceIdToDelete = parseInt(deleteBtn.dataset.id);
+                const deleteInvoiceBtn = e.target.closest('.delete-invoice-btn');
+                if (deleteInvoiceBtn) {
+                    itemToDelete = { id: parseInt(deleteInvoiceBtn.dataset.id), type: 'invoice' };
+                    document.getElementById('modal-message').textContent = 'Are you sure you want to delete this entire invoice and all its attachments?';
                     document.getElementById('confirmation-modal').classList.remove('hidden');
                 }
-                const attachBtn = e.target.closest('.attach-btn');
-                if (attachBtn) {
-                    document.getElementById(`file-input-${attachBtn.dataset.id}`).click();
-                }
-                const removeAttachBtn = e.target.closest('.remove-attach-btn');
+                 const removeAttachBtn = e.target.closest('.remove-attach-btn');
                 if(removeAttachBtn) {
-                    handleAttachmentChange(parseInt(removeAttachBtn.dataset.id), null);
+                    itemToDelete = { id: parseInt(removeAttachBtn.dataset.id), type: 'attachment' };
+                    document.getElementById('modal-message').textContent = 'Are you sure you want to delete this attachment?';
+                    document.getElementById('confirmation-modal').classList.remove('hidden');
+                }
+                const addCategoryBtn = e.target.closest('.add-category-btn');
+                if (addCategoryBtn) {
+                    const invoiceId = addCategoryBtn.dataset.invoiceId;
+                    const category = addCategoryBtn.dataset.category;
+                    document.getElementById(`file-input-${invoiceId}-${category}`).click();
                 }
             });
 
             invoiceGrid.addEventListener('change', (e) => {
-                if (e.target.type === 'file' && e.target.files.length > 0) {
-                    handleAttachmentChange(parseInt(e.target.id.split('-')[2]), e.target.files[0]);
+                if (e.target.classList.contains('attach-file-input') && e.target.files.length > 0) {
+                    handleAddAttachment(parseInt(e.target.dataset.invoiceId), e.target.dataset.category, e.target.files[0]);
                 }
             });
 
@@ -239,12 +263,13 @@
                     const added = await api.addInvoice(newInvoice);
                     state.invoices.push(added);
                 });
+                render();
             });
 
             document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
                 document.getElementById('confirmation-modal').classList.add('hidden');
-                if (invoiceIdToDelete) await handleDelete(invoiceIdToDelete);
-                invoiceIdToDelete = null;
+                if (itemToDelete.id) await handleDelete();
+                itemToDelete = { id: null, type: null };
             });
             document.getElementById('cancel-delete-btn').addEventListener('click', () => {
                 document.getElementById('confirmation-modal').classList.add('hidden');
