@@ -24,7 +24,7 @@
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; position: absolute; top: 50%; left: 50%; margin-left: -20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* New "Aero Glass" Effect for Status Borders */
+        /* "Aero Glass" Effect for Status Borders */
         .status-outstanding {
             border-left: 4px solid #ef4444;
             box-shadow: inset 3px 0 6px -2px rgba(239, 68, 68, 0.5), inset -1px 0 1px rgba(255, 255, 255, 0.4);
@@ -180,7 +180,7 @@
                             <div class="mt-2">
                                 <label class="text-xs font-semibold text-gray-500">${category}</label>
                                 ${filesHTML}
-                                <input type="file" id="file-input-${invoice.id}-${category}" class="hidden attach-file-input" data-invoice-id="${invoice.id}" data-category="${category}" accept=".pdf,.jpg,.jpeg,.png">
+                                <input type="file" id="file-input-${invoice.id}-${category}" class="hidden attach-file-input" data-invoice-id="${invoice.id}" data-category="${category}" accept="*/*">
                                 <button class="add-category-btn w-full text-xs text-gray-500 border-2 border-dashed border-gray-200 rounded-md py-1 mt-1 hover:bg-gray-50" data-invoice-id="${invoice.id}" data-category="${category}">+ Add</button>
                             </div>
                         `;
