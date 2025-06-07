@@ -1,15 +1,13 @@
 # wrangler.toml
-# This is the corrected configuration file for a Cloudflare Pages deployment.
+# This is the corrected and simplified configuration file for a Cloudflare Pages deployment.
 
 name = "mpl-invoice-manager"
 compatibility_date = "2023-10-30"
 
-# This property is required for Cloudflare Pages to recognize this as a valid configuration.
-# It tells Pages where the static frontend files (like index.html) are located.
-pages_build_output_dir = "./"
+# The pages_build_output_dir is no longer needed when using the standard 'functions' directory.
 
 [[d1_databases]]
 binding = "DB" # This is how the worker will access the database (env.DB)
 database_name = "mpl-invoices"
-# This ID is now set to your specific D1 database.
+# This ID is correctly set to your specific D1 database.
 database_id = "04f0df31-9bf2-41a5-b0d2-edaed76a87ce"
