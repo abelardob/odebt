@@ -11,7 +11,7 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         .card { 
-            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+            background-color: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -24,21 +24,10 @@
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; position: absolute; top: 50%; left: 50%; margin-left: -20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* "Aero Glass" Effect for Status Borders */
-        .status-outstanding {
-            border-left: 4px solid #ef4444;
-            box-shadow: inset 3px 0 6px -2px rgba(239, 68, 68, 0.5), inset -1px 0 1px rgba(255, 255, 255, 0.4);
-        }
-        .status-paid {
-            border-left: 4px solid #22c55e;
-            box-shadow: inset 3px 0 6px -2px rgba(34, 197, 94, 0.5), inset -1px 0 1px rgba(255, 255, 255, 0.4);
-        }
-        .status-in-review {
-            border-left: 4px solid #f97316;
-            box-shadow: inset 3px 0 6px -2px rgba(249, 115, 22, 0.5), inset -1px 0 1px rgba(255, 255, 255, 0.4);
-        }
+        .status-outstanding { border-left: 4px solid #ef4444; box-shadow: inset 3px 0 6px -2px rgba(239, 68, 68, 0.5), inset -1px 0 1px rgba(255, 255, 255, 0.4); }
+        .status-paid { border-left: 4px solid #22c55e; box-shadow: inset 3px 0 6px -2px rgba(34, 197, 94, 0.5), inset -1px 0 1px rgba(255, 255, 255, 0.4); }
+        .status-in-review { border-left: 4px solid #f97316; box-shadow: inset 3px 0 6px -2px rgba(249, 115, 22, 0.5), inset -1px 0 1px rgba(255, 255, 255, 0.4); }
 
-        /* PDF Previewer Styles */
         #pdf-preview-modal { background-color: rgba(0,0,0,0.8); }
         #pdf-canvas { border: 1px solid black; direction: ltr; }
     </style>
@@ -46,9 +35,18 @@
 <body class="p-4 sm:p-6 md:p-8">
 
     <div id="app" class="max-w-7xl mx-auto">
-        <!-- UI elements like header, dashboard, modals, etc. -->
         <div id="loading-overlay" class="hidden fixed inset-0 bg-white bg-opacity-75 z-50 flex items-center justify-center"><div class="loader"></div></div>
-        <header class="mb-8"><h1 class="text-3xl font-bold text-gray-800">MPL Outstanding Invoices</h1><p class="text-gray-500 mt-1">An interactive tool to track and manage outstanding debts.</p></header>
+        <header class="mb-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">MPL Outstanding Invoices</h1>
+                    <p class="text-gray-500 mt-1">An interactive tool to track and manage outstanding debts.</p>
+                </div>
+                 <button id="reseed-db-btn" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                    Reseed Database
+                </button>
+            </div>
+        </header>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-gray-500 font-medium">Total Outstanding Amount</h3><p id="total-outstanding" class="text-3xl font-bold text-red-600 mt-2">$0.00 MXN</p></div>
             <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-gray-500 font-medium">Outstanding Invoices</h3><p id="outstanding-count" class="text-3xl font-bold text-gray-800 mt-2">0</p></div>
@@ -67,36 +65,15 @@
     <div id="confirmation-modal" class="hidden fixed inset-0 z-20 overflow-y-auto"><div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"><div class="fixed inset-0 modal-backdrop"></div><span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span><div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"><div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4"><div class="sm:flex sm:items-start"><div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"><svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg></div><div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left"><h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Delete</h3><div class="mt-2"><p class="text-sm text-gray-500" id="modal-message">Are you sure?</p></div></div></div></div><div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"><button id="confirm-delete-btn" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700">Delete</button><button id="cancel-delete-btn" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50">Cancel</button></div></div></div></div>
     <div id="invoice-modal" class="hidden fixed inset-0 z-20 overflow-y-auto"><div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"><div class="fixed inset-0 modal-backdrop"></div><span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span><div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"><form id="invoice-form"><div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4"><h3 class="text-lg leading-6 font-medium text-gray-900" id="invoice-modal-title">Add New Invoice</h3><div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"><div class="sm:col-span-6"><label for="form-provider" class="block text-sm font-medium text-gray-700">Provider</label><input type="text" id="form-provider" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></div><div class="sm:col-span-6"><label for="form-service" class="block text-sm font-medium text-gray-700">Service / Concept</label><textarea id="form-service" rows="3" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea></div><div class="sm:col-span-3"><label for="form-amount" class="block text-sm font-medium text-gray-700">Amount (MXN)</label><input type="number" step="0.01" id="form-amount" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></div><div class="sm:col-span-3"><label for="form-date" class="block text-sm font-medium text-gray-700">Invoice Date</label><input type="date" id="form-date" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></div><div class="sm:col-span-6"><label for="form-status" class="block text-sm font-medium text-gray-700">Status</label><select id="form-status" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 rounded-md"><option>Outstanding</option><option>Paid</option><option>In Review</option></select></div></div></div><div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"><button type="submit" id="save-invoice-btn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700">Save</button><button type="button" id="cancel-invoice-btn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50">Cancel</button></div></form></div></div></div>
     
-    <!-- PDF Preview Modal -->
-    <div id="pdf-preview-modal" class="hidden fixed inset-0 z-30 overflow-y-scroll flex items-center justify-center p-4">
-        <div class="fixed inset-0 bg-black bg-opacity-75"></div>
-        <div class="relative w-full max-w-4xl">
-            <div id="pdf-controls" class="bg-gray-800 text-white p-2 rounded-t-lg flex items-center justify-between">
-                <div>
-                    <button id="prev-page" class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded disabled:opacity-50">&lt; Prev</button>
-                    <span class="mx-4">Page: <span id="page-num"></span> / <span id="page-count"></span></span>
-                    <button id="next-page" class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded disabled:opacity-50">Next &gt;</button>
-                </div>
-                <button id="close-pdf-preview" class="text-2xl font-bold leading-none px-2">&times;</button>
-            </div>
-            <div class="overflow-auto" style="max-height: 85vh;">
-                 <canvas id="pdf-canvas" class="mx-auto"></canvas>
-            </div>
-        </div>
-    </div>
-
+    <div id="pdf-preview-modal" class="hidden fixed inset-0 z-30 overflow-y-scroll flex items-center justify-center p-4"><div class="fixed inset-0 bg-black bg-opacity-75"></div><div class="relative w-full max-w-4xl"><div id="pdf-controls" class="bg-gray-800 text-white p-2 rounded-t-lg flex items-center justify-between"><div><button id="prev-page" class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded disabled:opacity-50">&lt; Prev</button><span class="mx-4">Page: <span id="page-num"></span> / <span id="page-count"></span></span><button id="next-page" class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded disabled:opacity-50">Next &gt;</button></div><button id="close-pdf-preview" class="text-2xl font-bold leading-none px-2">&times;</button></div><div class="overflow-auto" style="max-height: 85vh;"><canvas id="pdf-canvas" class="mx-auto"></canvas></div></div></div>
 
     <script type="module">
-        // Import PDF.js
         const { pdfjsLib } = globalThis;
         pdfjsLib.GlobalWorkerOptions.workerSrc = `https://mozilla.github.io/pdf.js/build/pdf.worker.mjs`;
 
         document.addEventListener('DOMContentLoaded', () => {
-            // --- CONFIG ---
             const WORKER_URL = "";
             const ATTACHMENT_CATEGORIES = ['Estimate', 'Invoice', 'Proof of Payment', 'Other'];
-
-            // --- STATE & API ---
             let state = { invoices: [], loading: true };
             const api = {
                 getInvoices: () => fetch(`${WORKER_URL}/api/invoices`).then(res => res.json()),
@@ -104,16 +81,10 @@
                 updateInvoice: (id, data) => fetch(`${WORKER_URL}/api/invoices/${id}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) }).then(res => res.json()),
                 deleteInvoice: (id) => fetch(`${WORKER_URL}/api/invoices/${id}`, { method: 'DELETE' }),
                 deleteAttachment: (id) => fetch(`${WORKER_URL}/api/attachments/${id}`, { method: 'DELETE' }),
+                reseedDatabase: () => fetch(`${WORKER_URL}/api/reseed`, { method: 'POST' })
             };
             
-            // --- PDF PREVIEWER STATE ---
-            let pdfDoc = null;
-            let pageNum = 1;
-            let pageRendering = false;
-            let pageNumPending = null;
-            const scale = 1.5;
-
-            // --- DOM ELEMENTS ---
+            let pdfDoc = null, pageNum = 1, pageRendering = false, pageNumPending = null, scale = 1.5;
             const invoiceGrid = document.getElementById('invoice-grid');
             let itemToDelete = { id: null, type: null };
             const pdfPreviewModal = document.getElementById('pdf-preview-modal');
@@ -122,7 +93,6 @@
             const pageNumEl = document.getElementById('page-num');
             const pageCountEl = document.getElementById('page-count');
             
-            // --- RENDER FUNCTIONS ---
             const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'MXN' }).format(amount);
             const formatDate = (dateString) => new Date(dateString + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
             
@@ -130,7 +100,6 @@
                 document.getElementById('loading-overlay').style.display = state.loading ? 'flex' : 'none';
                 if (state.loading) return;
                 
-                // Update summary & filters
                 const outstanding = state.invoices.filter(i => i.status === 'Outstanding');
                 document.getElementById('total-outstanding').textContent = `${formatCurrency(outstanding.reduce((s, i) => s + i.amount, 0))} MXN`;
                 document.getElementById('outstanding-count').textContent = outstanding.length;
@@ -143,14 +112,12 @@
                 providers.forEach(p => providerFilter.innerHTML += `<option value="${p}">${p}</option>`);
                 providerFilter.value = currentProvider;
 
-                // Filter & Sort
                 let filtered = state.invoices.filter(inv => 
                     (providerFilter.value === 'All Providers' || inv.provider === providerFilter.value) &&
                     (document.getElementById('status-filter').value === 'All' || inv.status === document.getElementById('status-filter').value)
                 );
                 filtered.sort((a,b) => document.getElementById('sort-by-date').value === 'Newest First' ? new Date(b.date) - new Date(a.date) : new Date(a.date) - new Date(b.date));
                 
-                // Render grid
                 invoiceGrid.innerHTML = '';
                 document.getElementById('no-results').classList.toggle('hidden', filtered.length > 0);
 
@@ -169,38 +136,19 @@
                         const filesHTML = attachments.map(att => {
                             const isPdf = att.file_name.toLowerCase().endsWith('.pdf');
                             const linkClass = isPdf ? 'preview-pdf-btn' : '';
-                            return `
-                            <div class="flex items-center justify-between text-sm mt-1">
-                                <a href="${att.file_url}" target="${isPdf ? '_self' : '_blank'}" class="text-indigo-600 hover:underline truncate ${linkClass}" data-url="${att.file_url}" title="${att.file_name}">${att.file_name}</a>
-                                <button class="remove-attach-btn p-1 text-gray-400 hover:text-red-600" data-id="${att.id}">&times;</button>
-                            </div>
-                        `}).join('');
+                            return `<div class="flex items-center justify-between text-sm mt-1"><a href="${att.file_url}" target="${isPdf ? '_self' : '_blank'}" class="text-indigo-600 hover:underline truncate ${linkClass}" data-url="${att.file_url}" title="${att.file_name}">${att.file_name}</a><button class="remove-attach-btn p-1 text-gray-400 hover:text-red-600" data-id="${att.id}">&times;</button></div>`;
+                        }).join('');
                         
-                        return `
-                            <div class="mt-2">
-                                <label class="text-xs font-semibold text-gray-500">${category}</label>
-                                ${filesHTML}
-                                <input type="file" id="file-input-${invoice.id}-${category}" class="hidden attach-file-input" data-invoice-id="${invoice.id}" data-category="${category}" accept="*/*">
-                                <button class="add-category-btn w-full text-xs text-gray-500 border-2 border-dashed border-gray-200 rounded-md py-1 mt-1 hover:bg-gray-50" data-invoice-id="${invoice.id}" data-category="${category}">+ Add</button>
-                            </div>
-                        `;
+                        return `<div class="mt-2"><label class="text-xs font-semibold text-gray-500">${category}</label>${filesHTML}<input type="file" id="file-input-${invoice.id}-${category}" class="hidden attach-file-input" data-invoice-id="${invoice.id}" data-category="${category}" accept="*/*"><button class="add-category-btn w-full text-xs text-gray-500 border-2 border-dashed border-gray-200 rounded-md py-1 mt-1 hover:bg-gray-50" data-invoice-id="${invoice.id}" data-category="${category}">+ Add</button></div>`;
                     }).join('');
 
                     card.innerHTML = `
                         <div>
-                            <div class="flex justify-between items-start">
-                                <h4 class="font-bold text-lg text-gray-800">${invoice.service}</h4>
-                                <span class="text-xs font-semibold px-2 py-1 rounded-full ${statusColor}">${invoice.status}</span>
-                            </div>
-                            <p class="text-sm text-gray-500">${invoice.provider}</p>
-                            <p class="text-sm text-gray-500 mt-1">${formatDate(invoice.date)}</p>
-                            <p class="font-bold text-2xl text-gray-900 mt-4">${formatCurrency(invoice.amount)}</p>
+                            <div class="flex justify-between items-start"><h4 class="font-bold text-lg text-gray-800">${invoice.service}</h4><span class="text-xs font-semibold px-2 py-1 rounded-full ${statusColor}">${invoice.status}</span></div>
+                            <p class="text-sm text-gray-500">${invoice.provider}</p><p class="text-sm text-gray-500 mt-1">${formatDate(invoice.date)}</p><p class="font-bold text-2xl text-gray-900 mt-4">${formatCurrency(invoice.amount)}</p>
                         </div>
                         <div>
-                            <div class="mt-4 pt-4 border-t border-gray-200">
-                                <h5 class="text-sm font-bold text-gray-700">Attachments</h5>
-                                ${attachmentsHTML}
-                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-200"><h5 class="text-sm font-bold text-gray-700">Attachments</h5>${attachmentsHTML}</div>
                             <div class="mt-4 flex justify-end gap-2">
                                 <div class="relative inline-block text-left group">
                                     <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">Status</button>
@@ -219,91 +167,47 @@
                 });
             };
 
-            // --- PDF PREVIEWER FUNCTIONS ---
             function renderPdfPage(num) {
                 pageRendering = true;
-                pdfDoc.getPage(num).then(function(page) {
+                pdfDoc.getPage(num).then(page => {
                     const viewport = page.getViewport({scale: scale});
                     pdfCanvas.height = viewport.height;
                     pdfCanvas.width = viewport.width;
-
-                    const renderContext = {
-                        canvasContext: pdfCtx,
-                        viewport: viewport
-                    };
-                    const renderTask = page.render(renderContext);
-
-                    renderTask.promise.then(function() {
+                    const renderContext = { canvasContext: pdfCtx, viewport: viewport };
+                    page.render(renderContext).promise.then(() => {
                         pageRendering = false;
-                        if (pageNumPending !== null) {
-                            renderPdfPage(pageNumPending);
-                            pageNumPending = null;
-                        }
+                        if (pageNumPending !== null) { renderPdfPage(pageNumPending); pageNumPending = null; }
                     });
                 });
                 pageNumEl.textContent = num;
             }
-
-            function queueRenderPage(num) {
-                if (pageRendering) {
-                    pageNumPending = num;
-                } else {
-                    renderPdfPage(num);
-                }
-            }
-
-            function onPrevPage() {
-                if (pageNum <= 1) return;
-                pageNum--;
-                queueRenderPage(pageNum);
-            }
-
-            function onNextPage() {
-                if (pageNum >= pdfDoc.numPages) return;
-                pageNum++;
-                queueRenderPage(pageNum);
-            }
-
+            function queueRenderPage(num) { if (pageRendering) { pageNumPending = num; } else { renderPdfPage(num); } }
+            function onPrevPage() { if (pageNum <= 1) return; pageNum--; queueRenderPage(pageNum); }
+            function onNextPage() { if (pageNum >= pdfDoc.numPages) return; pageNum++; queueRenderPage(pageNum); }
             function openPdfPreview(url) {
                 pdfPreviewModal.classList.remove('hidden');
-                const loadingTask = pdfjsLib.getDocument(url);
-                loadingTask.promise.then(function(pdf) {
+                pdfjsLib.getDocument(url).promise.then(pdf => {
                     pdfDoc = pdf;
                     pageCountEl.textContent = pdfDoc.numPages;
                     pageNum = 1;
                     renderPdfPage(pageNum);
-                }, function (reason) {
-                    console.error(reason);
-                    alert("Error loading PDF.");
-                    closePdfPreview();
-                });
+                }, reason => { console.error(reason); alert("Error loading PDF."); closePdfPreview(); });
             }
+            function closePdfPreview() { pdfPreviewModal.classList.add('hidden'); pdfDoc = null; }
 
-            function closePdfPreview() {
-                pdfPreviewModal.classList.add('hidden');
-                pdfDoc = null;
-            }
-
-            // --- ACTIONS ---
             const withLoading = async (action) => {
                 state.loading = true; render();
                 try { await action(); } catch (e) { alert(`Error: ${e.message}`); console.error(e); }
                 state.loading = false;
             };
-            const loadInvoices = async () => {
-                await withLoading(async () => { state.invoices = await api.getInvoices(); });
-                render();
-            };
+            const loadInvoices = async () => { await withLoading(async () => { state.invoices = await api.getInvoices(); }); render(); };
             const handleAddAttachment = async (invoiceId, category, file) => {
                 await withLoading(async () => {
                     const reader = new FileReader();
                     reader.onload = async (e) => {
                         const content = e.target.result.split(',')[1];
                         const invoice = state.invoices.find(inv => inv.id === invoiceId);
-                        const updated = await api.updateInvoice(invoiceId, {
-                            status: invoice.status,
-                            newAttachment: { content: content, name: file.name, category: category }
-                        });
+                        const updated = await api.updateInvoice(invoiceId, { status: invoice.status, newAttachment: { content: content, name: file.name, category: category } });
                         const index = state.invoices.findIndex(inv => inv.id === invoiceId);
                         if (index !== -1) state.invoices[index] = updated;
                         render();
@@ -311,7 +215,6 @@
                     reader.readAsDataURL(file);
                 });
             };
-            
             const handleStatusChange = async (id, status) => {
                 await withLoading(async () => {
                     const invoice = state.invoices.find(inv => inv.id === id);
@@ -321,7 +224,6 @@
                 });
                 render();
             };
-            
             const handleDelete = async () => {
                 await withLoading(async () => {
                     if (itemToDelete.type === 'invoice') {
@@ -335,38 +237,29 @@
                 render();
             };
 
-            // --- EVENT LISTENERS ---
             document.getElementById('provider-filter').addEventListener('change', render);
             document.getElementById('status-filter').addEventListener('change', render);
             document.getElementById('sort-by-date').addEventListener('change', render);
             
             invoiceGrid.addEventListener('click', (e) => {
                 const statusBtn = e.target.closest('.status-change-btn');
-                if (statusBtn) {
-                    e.preventDefault();
-                    handleStatusChange(parseInt(statusBtn.dataset.id), statusBtn.dataset.status);
-                }
+                if (statusBtn) { e.preventDefault(); handleStatusChange(parseInt(statusBtn.dataset.id), statusBtn.dataset.status); }
                 const deleteInvoiceBtn = e.target.closest('.delete-invoice-btn');
                 if (deleteInvoiceBtn) {
                     itemToDelete = { id: parseInt(deleteInvoiceBtn.dataset.id), type: 'invoice' };
                     document.getElementById('modal-message').textContent = 'Are you sure you want to delete this entire invoice and all its attachments?';
                     document.getElementById('confirmation-modal').classList.remove('hidden');
                 }
-                 const removeAttachBtn = e.target.closest('.remove-attach-btn');
+                const removeAttachBtn = e.target.closest('.remove-attach-btn');
                 if(removeAttachBtn) {
                     itemToDelete = { id: parseInt(removeAttachBtn.dataset.id), type: 'attachment' };
                     document.getElementById('modal-message').textContent = 'Are you sure you want to delete this attachment?';
                     document.getElementById('confirmation-modal').classList.remove('hidden');
                 }
                 const addCategoryBtn = e.target.closest('.add-category-btn');
-                if (addCategoryBtn) {
-                    document.getElementById(`file-input-${addCategoryBtn.dataset.invoiceId}-${addCategoryBtn.dataset.category}`).click();
-                }
+                if (addCategoryBtn) { document.getElementById(`file-input-${addCategoryBtn.dataset.invoiceId}-${addCategoryBtn.dataset.category}`).click(); }
                 const previewPdfBtn = e.target.closest('.preview-pdf-btn');
-                if (previewPdfBtn) {
-                    e.preventDefault();
-                    openPdfPreview(previewPdfBtn.dataset.url);
-                }
+                if (previewPdfBtn) { e.preventDefault(); openPdfPreview(previewPdfBtn.dataset.url); }
             });
 
             invoiceGrid.addEventListener('change', (e) => {
@@ -375,12 +268,8 @@
                 }
             });
 
-            document.getElementById('add-invoice-btn').addEventListener('click', () => {
-                 document.getElementById('invoice-modal').classList.remove('hidden');
-            });
-            document.getElementById('cancel-invoice-btn').addEventListener('click', () => {
-                 document.getElementById('invoice-modal').classList.add('hidden');
-            });
+            document.getElementById('add-invoice-btn').addEventListener('click', () => { document.getElementById('invoice-modal').classList.remove('hidden'); });
+            document.getElementById('cancel-invoice-btn').addEventListener('click', () => { document.getElementById('invoice-modal').classList.add('hidden'); });
             document.getElementById('invoice-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const newInvoice = {
@@ -403,16 +292,12 @@
                 if (itemToDelete.id) await handleDelete();
                 itemToDelete = { id: null, type: null };
             });
-            document.getElementById('cancel-delete-btn').addEventListener('click', () => {
-                document.getElementById('confirmation-modal').classList.add('hidden');
-            });
+            document.getElementById('cancel-delete-btn').addEventListener('click', () => { document.getElementById('confirmation-modal').classList.add('hidden'); });
             
-            // PDF Previewer event listeners
             document.getElementById('prev-page').addEventListener('click', onPrevPage);
             document.getElementById('next-page').addEventListener('click', onNextPage);
             document.getElementById('close-pdf-preview').addEventListener('click', closePdfPreview);
 
-            // --- INIT ---
             loadInvoices();
         });
     </script>
