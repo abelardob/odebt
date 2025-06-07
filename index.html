@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MPL Outstanding Invoices Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- PDF.js Library -->
     <script src="https://mozilla.github.io/pdf.js/build/pdf.mjs" type="module"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
@@ -43,7 +43,7 @@
                     <p class="text-gray-500 mt-1">An interactive tool to track and manage outstanding debts.</p>
                 </div>
                 <!-- To hide the reseed button, simply comment out the <button> element below -->
-                <button id="reseed-db-btn" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                 <button id="reseed-db-btn" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
                     Reseed Database
                 </button> 
             </div>
@@ -299,15 +299,15 @@
             document.getElementById('next-page').addEventListener('click', onNextPage);
             document.getElementById('close-pdf-preview').addEventListener('click', closePdfPreview);
             
-            // This is the Reseed Button functionality.
             const reseedBtn = document.getElementById('reseed-db-btn');
             if (reseedBtn) {
                 reseedBtn.addEventListener('click', async () => {
                     if (confirm("Are you sure you want to reset the database? This will delete all current data and restore the original 20 invoices.")) {
                         await withLoading(async () => {
                             await api.reseedDatabase();
-                            await loadInvoices(); // Reload the data after reseeding
+                            state.invoices = await api.getInvoices();
                         });
+                        render();
                     }
                 });
             }
