@@ -2,7 +2,6 @@
 -- This file defines the structure of your 'invoices' table for the D1 database.
 -- Run this command via the wrangler CLI to create your table:
 -- wrangler d1 execute <DATABASE_NAME> --file=./db/schema.sql
-npx wrangler d1 execute mpl-invoices --file=./db/schema.sql
 
 -- Drop the table if it already exists to start fresh.
 DROP TABLE IF EXISTS invoices;
